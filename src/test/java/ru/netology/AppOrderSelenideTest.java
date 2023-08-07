@@ -3,15 +3,21 @@ package ru.netology;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static com.codeborne.selenide.Selenide.*;
 
 public class AppOrderSelenideTest {
 
-    @Test
-    void shouldTestFormSuccess() throws InterruptedException {
+    @BeforeEach
+    void openBrowser() {
         open("http://localhost:9999/");
+    }
+
+
+    @Test
+    void shouldTestFormSuccess() {
         SelenideElement name = $("[data-test-id=\"name\"]");
         SelenideElement phone = $("[data-test-id=\"phone\"]");
         name.$("[data-test-id=name] input").setValue("Василий Васильков");
@@ -24,8 +30,7 @@ public class AppOrderSelenideTest {
     }
 
     @Test
-    void shouldTestFormNotClickCheckbox() throws InterruptedException {
-        open("http://localhost:9999/");
+    void shouldTestFormNotClickCheckbox() {
         SelenideElement name = $("[data-test-id=\"name\"]");
         SelenideElement phone = $("[data-test-id=\"phone\"]");
         name.$("[data-test-id=name] input").setValue("Василий Васильков");
@@ -36,8 +41,7 @@ public class AppOrderSelenideTest {
     }
 
     @Test
-    void shouldGetMessageIfNameIsNumber() throws InterruptedException {
-        open("http://localhost:9999/");
+    void shouldGetMessageIfNameIsNumber() {
         SelenideElement name = $("[data-test-id=\"name\"]");
         SelenideElement phone = $("[data-test-id=\"phone\"]");
         name.$("[data-test-id=name] input").setValue("123456");
@@ -46,13 +50,11 @@ public class AppOrderSelenideTest {
         SelenideElement button = $("[class=\"button__content\"]");
         checkbox.click();
         button.click();
-        ElementsCollection message = $$("[class=\"input__sub\"]");
-        $(message.get(0)).shouldHave(Condition.text("Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы."));
+        $("[data-test-id='name'].input_invalid .input__sub").shouldHave(Condition.text("Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы."));
     }
 
     @Test
-    void shouldGetMessageIfNameIsNull() throws InterruptedException {
-        open("http://localhost:9999/");
+    void shouldGetMessageIfNameIsNull() {
         SelenideElement name = $("[data-test-id=\"name\"]");
         SelenideElement phone = $("[data-test-id=\"phone\"]");
         phone.$("[data-test-id=phone] input").setValue("+79100000000");
@@ -60,13 +62,11 @@ public class AppOrderSelenideTest {
         SelenideElement button = $("[class=\"button__content\"]");
         checkbox.click();
         button.click();
-        ElementsCollection message = $$("[class=\"input__sub\"]");
-        $(message.get(0)).shouldHave(Condition.text("Поле обязательно для заполнения"));
+        $("[data-test-id='name'].input_invalid .input__sub").shouldHave(Condition.text("Поле обязательно для заполнения"));
     }
 
     @Test
-    void shouldGetMessageIfNameHasSymbols() throws InterruptedException {
-        open("http://localhost:9999/");
+    void shouldGetMessageIfNameHasSymbols() {
         SelenideElement name = $("[data-test-id=\"name\"]");
         SelenideElement phone = $("[data-test-id=\"phone\"]");
         name.$("[data-test-id=name] input").setValue("Вася%");
@@ -75,13 +75,11 @@ public class AppOrderSelenideTest {
         SelenideElement button = $("[class=\"button__content\"]");
         checkbox.click();
         button.click();
-        ElementsCollection message = $$("[class=\"input__sub\"]");
-        $(message.get(0)).shouldHave(Condition.text("Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы."));
+        $("[data-test-id='name'].input_invalid .input__sub").shouldHave(Condition.text("Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы."));
     }
 
     @Test
-    void shouldGetMessageIfNameIsNotRussian() throws InterruptedException {
-        open("http://localhost:9999/");
+    void shouldGetMessageIfNameIsNotRussian() {
         SelenideElement name = $("[data-test-id=\"name\"]");
         SelenideElement phone = $("[data-test-id=\"phone\"]");
         name.$("[data-test-id=name] input").setValue("Anna");
@@ -90,26 +88,22 @@ public class AppOrderSelenideTest {
         SelenideElement button = $("[class=\"button__content\"]");
         checkbox.click();
         button.click();
-        ElementsCollection message = $$("[class=\"input__sub\"]");
-        $(message.get(0)).shouldHave(Condition.text("Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы."));
+        $("[data-test-id='name'].input_invalid .input__sub").shouldHave(Condition.text("Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы."));
     }
 
     @Test
-    void shouldGetMessageIfPhoneIsNull() throws InterruptedException {
-        open("http://localhost:9999/");
+    void shouldGetMessageIfPhoneIsNull() {
         SelenideElement name = $("[data-test-id=\"name\"]");
         name.$("[data-test-id=name] input").setValue("Васильков Василий");
         SelenideElement checkbox = $("[data-test-id=\"agreement\"]");
         SelenideElement button = $("[class=\"button__content\"]");
         checkbox.click();
         button.click();
-        ElementsCollection message = $$("[class=\"input__sub\"]");
-        $(message.get(1)).shouldHave(Condition.text("Поле обязательно для заполнения"));
+        $("[data-test-id='phone'].input_invalid .input__sub").shouldHave(Condition.text("Поле обязательно для заполнения"));
     }
 
     @Test
-    void shouldGetMessageIfPhoneHasNotPlus() throws InterruptedException {
-        open("http://localhost:9999/");
+    void shouldGetMessageIfPhoneHasNotPlus() {
         SelenideElement name = $("[data-test-id=\"name\"]");
         SelenideElement phone = $("[data-test-id=\"phone\"]");
         name.$("[data-test-id=name] input").setValue("Васильков Василий");
@@ -118,13 +112,11 @@ public class AppOrderSelenideTest {
         SelenideElement button = $("[class=\"button__content\"]");
         checkbox.click();
         button.click();
-        ElementsCollection message = $$("[class=\"input__sub\"]");
-        $(message.get(1)).shouldHave(Condition.text("Телефон указан неверно. Должно быть 11 цифр, например, +79012345678."));
+        $("[data-test-id='phone'].input_invalid .input__sub").shouldHave(Condition.text("Телефон указан неверно. Должно быть 11 цифр, например, +79012345678."));
     }
 
     @Test
-    void shouldGetMessageIfPhoneHasEnglishLetters() throws InterruptedException {
-        open("http://localhost:9999/");
+    void shouldGetMessageIfPhoneHasEnglishLetters() {
         SelenideElement name = $("[data-test-id=\"name\"]");
         SelenideElement phone = $("[data-test-id=\"phone\"]");
         name.$("[data-test-id=name] input").setValue("Васильков Василий");
@@ -133,13 +125,11 @@ public class AppOrderSelenideTest {
         SelenideElement button = $("[class=\"button__content\"]");
         checkbox.click();
         button.click();
-        ElementsCollection message = $$("[class=\"input__sub\"]");
-        $(message.get(1)).shouldHave(Condition.text("Телефон указан неверно. Должно быть 11 цифр, например, +79012345678."));
+        $("[data-test-id='phone'].input_invalid .input__sub").shouldHave(Condition.text("Телефон указан неверно. Должно быть 11 цифр, например, +79012345678."));
     }
 
     @Test
-    void shouldGetMessageIfPhoneHasRussianLetters() throws InterruptedException {
-        open("http://localhost:9999/");
+    void shouldGetMessageIfPhoneHasRussianLetters() {
         SelenideElement name = $("[data-test-id=\"name\"]");
         SelenideElement phone = $("[data-test-id=\"phone\"]");
         name.$("[data-test-id=name] input").setValue("Васильков Василий");
@@ -148,13 +138,11 @@ public class AppOrderSelenideTest {
         SelenideElement button = $("[class=\"button__content\"]");
         checkbox.click();
         button.click();
-        ElementsCollection message = $$("[class=\"input__sub\"]");
-        $(message.get(1)).shouldHave(Condition.text("Телефон указан неверно. Должно быть 11 цифр, например, +79012345678."));
+        $("[data-test-id='phone'].input_invalid .input__sub").shouldHave(Condition.text("Телефон указан неверно. Должно быть 11 цифр, например, +79012345678."));
     }
 
     @Test
-    void shouldGetMessageIfPhoneIsOneNumber() throws InterruptedException {
-        open("http://localhost:9999/");
+    void shouldGetMessageIfPhoneIsOneNumber() {
         SelenideElement name = $("[data-test-id=\"name\"]");
         SelenideElement phone = $("[data-test-id=\"phone\"]");
         name.$("[data-test-id=name] input").setValue("Васильков Василий");
@@ -163,13 +151,11 @@ public class AppOrderSelenideTest {
         SelenideElement button = $("[class=\"button__content\"]");
         checkbox.click();
         button.click();
-        ElementsCollection message = $$("[class=\"input__sub\"]");
-        $(message.get(1)).shouldHave(Condition.text("Телефон указан неверно. Должно быть 11 цифр, например, +79012345678."));
+        $("[data-test-id='phone'].input_invalid .input__sub").shouldHave(Condition.text("Телефон указан неверно. Должно быть 11 цифр, например, +79012345678."));
     }
 
     @Test
-    void shouldGetMessageIfPhoneIsLong() throws InterruptedException {
-        open("http://localhost:9999/");
+    void shouldGetMessageIfPhoneIsLong() {
         SelenideElement name = $("[data-test-id=\"name\"]");
         SelenideElement phone = $("[data-test-id=\"phone\"]");
         name.$("[data-test-id=name] input").setValue("Васильков Василий");
@@ -178,13 +164,11 @@ public class AppOrderSelenideTest {
         SelenideElement button = $("[class=\"button__content\"]");
         checkbox.click();
         button.click();
-        ElementsCollection message = $$("[class=\"input__sub\"]");
-        $(message.get(1)).shouldHave(Condition.text("Телефон указан неверно. Должно быть 11 цифр, например, +79012345678."));
+        $("[data-test-id='phone'].input_invalid .input__sub").shouldHave(Condition.text("Телефон указан неверно. Должно быть 11 цифр, например, +79012345678."));
     }
 
     @Test
-    void shouldGetMessageIfPhoneIsShorter() throws InterruptedException {
-        open("http://localhost:9999/");
+    void shouldGetMessageIfPhoneIsShorter() {
         SelenideElement name = $("[data-test-id=\"name\"]");
         SelenideElement phone = $("[data-test-id=\"phone\"]");
         name.$("[data-test-id=name] input").setValue("Васильков Василий");
@@ -193,8 +177,7 @@ public class AppOrderSelenideTest {
         SelenideElement button = $("[class=\"button__content\"]");
         checkbox.click();
         button.click();
-        ElementsCollection message = $$("[class=\"input__sub\"]");
-        $(message.get(1)).shouldHave(Condition.text("Телефон указан неверно. Должно быть 11 цифр, например, +79012345678."));
+        $("[data-test-id='phone'].input_invalid .input__sub").shouldHave(Condition.text("Телефон указан неверно. Должно быть 11 цифр, например, +79012345678."));
     }
 
 }
