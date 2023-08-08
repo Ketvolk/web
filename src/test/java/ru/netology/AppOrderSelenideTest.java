@@ -172,7 +172,7 @@ public class AppOrderSelenideTest {
         SelenideElement name = $("[data-test-id=\"name\"]");
         SelenideElement phone = $("[data-test-id=\"phone\"]");
         name.$("[data-test-id=name] input").setValue("Васильков Василий");
-        phone.$("[data-test-id=phone] input").setValue("+7123456789");
+        phone.$("[data-test-id=phone] input").setValue("+79012345678");
         SelenideElement checkbox = $("[data-test-id=\"agreement\"]");
         SelenideElement button = $("[class=\"button__content\"]");
         checkbox.click();
